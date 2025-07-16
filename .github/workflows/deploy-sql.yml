@@ -1,5 +1,4 @@
 name: Deploy SQL to Supabase
-
 on:
   push:
     branches:
