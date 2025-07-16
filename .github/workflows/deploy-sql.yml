@@ -6,50 +6,32 @@ on:
     paths:
       - 'supabase/migrations/**.sql'
   workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1 - Checkout code
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2 - Show runner's public IP (for debugging)
-      - name: Show runner public IP
-        run: curl ifconfig.me
-
-      # Step 3 - Install PostgreSQL client
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
-      # Step 4 - Test connectivity to Supabase
       - name: Test TCP connection to Supabase
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          nc -zv db.mbvzhvhsywcgmpsnrghn.supabase.co 5432
+          nc -4 -zv db.mbvzhvhsywcgmpsnrghn.supabase.co 5432
 
-      # Step 5 - Run SQL migrations
       - name: Run SQL migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "DATABASE_URL is not set!"
-            exit 1
-          fi
-
           for file in supabase/migrations/*.sql; do
             echo "Running $file..."
-            psql "$DATABASE_URL" -f "$file"
+            psql -4 "$DATABASE_URL" -f "$file"
           done
 
-      # Step 6 - Verify connection with simple query
-      - name: List tables in DB
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          psql "$DATABASE_URL" -c '\dt'
 
 
 
