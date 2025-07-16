@@ -6,6 +6,7 @@ on:
     paths:
       - 'supabase/migrations/**.sql'
   workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,19 +18,13 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
-      - name: Test TCP connection to Supabase
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          nc -4 -zv db.mbvzhvhsywcgmpsnrghn.supabase.co 5432
-
       - name: Run SQL migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           for file in supabase/migrations/*.sql; do
             echo "Running $file..."
-            psql -4 "$DATABASE_URL" -f "$file"
+            psql "$DATABASE_URL" -f "$file"
           done
 
 
