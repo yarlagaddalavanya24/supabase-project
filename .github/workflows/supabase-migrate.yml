@@ -19,7 +19,7 @@ jobs:
 
       - name: Run SQL Migrations
         env:
-          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PGPASSWORD: ${{ secrets.DDATABASE_PASSWORD }}
         run: |
           for file in supabase/migrations/*.sql; do
             echo "Running migration: $file"
