@@ -27,7 +27,7 @@ jobs:
         run: |
           for file in supabase/migrations/*.sql; do
             echo "Running migration: $file"
-            psql --ipv4 \
+            psql  \
               -h ${{ secrets.DB_HOST }} \
               -p ${{ secrets.DB_PORT }} \
               -d ${{ secrets.SUPABASE_DB_NAME }} \
