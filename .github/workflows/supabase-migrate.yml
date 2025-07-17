@@ -16,6 +16,10 @@ jobs:
 
       - name: Install PostgreSQL Client
         run: sudo apt-get install -y postgresql-client
+        
+      - name: Force IPv4 preference to avoid Supabase connection issues
+        run: |
+          echo 'precedence ::ffff:0:0/96  100' | sudo tee -a /etc/gai.conf
 
       - name: Run Supabase migrations
         env:
