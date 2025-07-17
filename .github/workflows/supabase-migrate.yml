@@ -1,0 +1,30 @@
+name: Run Supabase SQL Migrations
+
+on:
+  push:
+    paths:
+      - 'supabase/migrations/**.sql'
+      - '.github/workflows/supabase-migrate.yml'
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PostgreSQL Client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Run SQL Migrations
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          for file in supabase/migrations/*.sql; do
+            echo "Running migration: $file"
+            psql -h ${{ secrets.DB_HOST }} \
+                 -d ${{ secrets.DB_NAME }} \
+                 -p ${{ secrets.PORT }} \
+                 -f "$file"
+          done
