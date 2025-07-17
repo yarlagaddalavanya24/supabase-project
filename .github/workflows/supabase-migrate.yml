@@ -23,12 +23,15 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install supabase/tap/supabase
 
-      - name: Run Supabase migrations
+      - name: Link Supabase Project (no password)
         env:
-          SUPABASE_ACCESS_TOKEN: sbp_793ff32099bcb6789b3ffc33051f24a47e91ed7d
-          SUPABASE_PROJECT_REF: mbvzhvhsywcgmpsnrghn
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_URL }}
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          supabase link --project-ref $SUPABASE_PROJECT_REF
-          supabase db push
+          supabase link --project-ref "$SUPABASE_PROJECT_REF" <<< ""
 
+      - name: Run Migrations via Supabase CLI
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          supabase db push
