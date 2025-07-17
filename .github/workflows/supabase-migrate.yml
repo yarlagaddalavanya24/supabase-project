@@ -1,20 +1,16 @@
 name: Run Supabase SQL Migrations
-
 on:
   push:
     paths:
       - 'supabase/migrations/**.sql'
       - '.github/workflows/supabase-migrate.yml'
-
 jobs:
   migrate:
     name: Supabase SQL Migrations
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Install Supabase CLI via Homebrew
         run: |
           sudo apt-get update
@@ -22,7 +18,6 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install supabase/tap/supabase
-
       - name: Set up Supabase environment
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
@@ -30,14 +25,12 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           mkdir -p ~/.supabase
           echo "$SUPABASE_ACCESS_TOKEN" > ~/.supabase/access-token
-
       - name: Link Supabase Project (non-interactive)
         env:
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           supabase link --project-ref "$SUPABASE_PROJECT_REF" <<< ""
-
       - name: Run Migrations with Supabase CLI
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
