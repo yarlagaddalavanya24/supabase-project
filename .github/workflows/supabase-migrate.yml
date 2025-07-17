@@ -22,16 +22,25 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install supabase/tap/supabase
-
-      - name: Link Supabase Project (no password)
+      - name: Set up Supabase environment
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_URL }}
+        run: |
+          echo "Setting up Supabase CLI environment"
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          mkdir -p ~/.supabase
+          echo "$SUPABASE_ACCESS_TOKEN" > ~/.supabase/access-token
+
+      - name: Link Supabase Project (non-interactive)
+        env:
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           supabase link --project-ref "$SUPABASE_PROJECT_REF" <<< ""
 
-      - name: Run Migrations via Supabase CLI
+      - name: Run Migrations with Supabase CLI
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           supabase db push
+
+     
