@@ -1,5 +1,4 @@
 name: Run Supabase SQL Migrations
-
 on:
   push:
     paths:
