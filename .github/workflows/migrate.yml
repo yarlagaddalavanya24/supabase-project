@@ -14,14 +14,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Supabase CLI
-        run: |
-          curl -sLo supabase https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64
-          chmod +x supabase
-          sudo mv supabase /usr/local/bin/supabase
-          supabase --version
-
-
+      - name: Install Supabase CLI via npm
+        run: npm install -g supabase
       - name: Run Supabase migrations
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
