@@ -6,21 +6,16 @@ on:
     paths:
       - 'supabase/migrations/**.sql'
   workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Print GitHub Actions runner IP
         run: curl ifconfig.me
-
-
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
       - name: Run SQL migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
