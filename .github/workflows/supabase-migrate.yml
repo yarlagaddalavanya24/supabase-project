@@ -33,7 +33,7 @@ jobs:
 
       - name: Link Supabase Project (non-interactive)
         env:
-          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_URL }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           supabase link --project-ref "$SUPABASE_PROJECT_REF" <<< ""
