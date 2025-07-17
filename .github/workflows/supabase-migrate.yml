@@ -22,11 +22,11 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install supabase/tap/supabase
+
       - name: Set up Supabase environment
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          echo "Setting up Supabase CLI environment"
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           mkdir -p ~/.supabase
           echo "$SUPABASE_ACCESS_TOKEN" > ~/.supabase/access-token
