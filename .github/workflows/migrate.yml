@@ -1,0 +1,30 @@
+name: Run Supabase SQL Migrations
+
+on:
+  push:
+    paths:
+      - 'supabase/migrations/**.sql'
+      - '.github/workflows/supabase-migrate.yml'
+
+jobs:
+  migrate:
+    name: Supabase SQL Migrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Supabase CLI
+        run: |
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase
+          chmod +x supabase
+          sudo mv supabase /usr/local/bin/
+
+      - name: Run Supabase migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.PROJECT_URL }}
+        run: |
+          supabase link --project-ref $SUPABASE_PROJECT_REF
+          supabase db push
