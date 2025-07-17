@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'supabase/migrations/**.sql'
-      - '.github/workflows/migrate.yml'
+      - '.github/workflows/supabase-migrate.yml'
 
 jobs:
   migrate:
