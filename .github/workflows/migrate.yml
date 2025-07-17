@@ -23,7 +23,7 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install supabase/tap/supabase
 
-      - name: Link Supabase project and push migrations
+      - name: Run Supabase migrations
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
@@ -31,3 +31,4 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           supabase link --project-ref $SUPABASE_PROJECT_REF
           supabase db push
+
