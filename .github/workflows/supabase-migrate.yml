@@ -17,14 +17,15 @@ jobs:
       - name: Install PostgreSQL Client
         run: sudo apt-get install -y postgresql-client
 
-      - name: Run SQL Migrations
+      - name: Run Supabase migrations
         env:
           PGPASSWORD: ${{ secrets.DDATABASE_PASSWORD }}
         run: |
           for file in supabase/migrations/*.sql; do
             echo "Running migration: $file"
-            psql -h ${{ secrets.DB_HOST }} \
-                 -d ${{ secrets.DB_NAME }} \
-                 -p ${{ secrets.PORT }} \
-                 -f "$file"
+            psql --ipv4 \
+              -h ${{ secrets.DB_HOST }} \
+              -p ${{ secrets.DB_PORT }} \
+              -d ${{ secrets.SUPABASE_DB_NAME }} \
+              -f "$file"
           done
