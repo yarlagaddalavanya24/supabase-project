@@ -15,7 +15,11 @@ jobs:
 
       - name: Install Supabase CLI
         run: |
-          npm install -g supabase
+          curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64 \
+            -o supabase
+          chmod +x supabase
+          sudo mv supabase /usr/local/bin/supabase
 
       - name: Deploy to Supabase
         env:
