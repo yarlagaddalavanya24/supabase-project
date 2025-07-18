@@ -13,8 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Supabase CLI
-        uses: bickoSiTiEff/setup-supabase-action@v1.1.0
-
+        uses: supabase/setup-cli@v1.3.0
+        with:
+          version: 1.136.3
+  
       - name: Check CLI version
         run: supabase --version
       - name: Verify Supabase types are checked in
