@@ -1,21 +1,19 @@
 name: Deploy to Supabase
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
 
       - name: Install Supabase CLI
         run: |
-          curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64 \
             -o supabase
           chmod +x supabase
@@ -27,3 +25,5 @@ jobs:
         run: |
           supabase link --project-ref mbvzhvhsywcgmpsnrghn
           supabase db push
+
+ 
