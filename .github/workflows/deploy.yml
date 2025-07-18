@@ -11,8 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          version: 1.0.0
+      - name: Start Supabase
         run: supabase start
       - name: Verify Supabase types are checked in
         run: |
