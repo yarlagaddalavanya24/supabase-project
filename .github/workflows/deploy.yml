@@ -11,8 +11,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Start Supabase
-        run: supabase start
+      - name: Install Supabase CLI
+        run: |
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64 \
+            -o supabase
+          chmod +x supabase
+          sudo mv supabase /usr/local/bin/supabase
       - name: Verify Supabase types are checked in
         run: |
           supabase gen types typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/supabase.ts
