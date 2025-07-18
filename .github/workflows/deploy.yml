@@ -13,9 +13,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Supabase CLI
         run: |
-          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64 -o supabase
+          curl -sL https://github.com/supabase/cli/releases/download/v1.156.0/supabase-cli-linux-x64 -o supabase
           chmod +x supabase
           sudo mv supabase /usr/local/bin/supabase
+      - name: Check CLI version
+        run: supabase --version
       - name: Verify Supabase types are checked in
         run: |
           supabase gen types typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/supabase.ts
