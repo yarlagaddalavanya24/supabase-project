@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'supabase/migrations/**.sql'
-      - '.github/workflows/supabase-migrate.yml'
+      - '.github/workflows/migrate.yml'
 jobs:
   migrate:
     name: Supabase SQL Migrations
