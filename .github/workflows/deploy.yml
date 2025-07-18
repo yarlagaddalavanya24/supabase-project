@@ -11,19 +11,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install Supabase CLI
+        with:
+          version: 1.0.0
+        run: supabase start
+      - name: Verify Supabase types are checked in
         run: |
-          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64 \
-            -o supabase
-          chmod +x supabase
-          sudo mv supabase /usr/local/bin/supabase
-
-      - name: Deploy to Supabase
+          supabase gen types typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/supabase.ts
+      
+          if [ -n "$(git status --porcelain src/types/supabase.ts)" ]; then
+            echo "❌ Supabase types are out of sync. Please run the generator and commit the result."
+            exit 1
+          else
+            echo "✅ Supabase types are up to date."
+          fi
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          supabase link --project-ref mbvzhvhsywcgmpsnrghn
-          supabase db push
+          SUPABASE_PROJECT_REF: mbvzhvhsywcgmpsnrghn
+
+    
 
  
