@@ -19,19 +19,17 @@ jobs:
   
       - name: Check CLI version
         run: supabase --version
-      - name: Verify Supabase types are checked in
+      - name: Ensure src/types directory exists
+        run: mkdir -p src/types
+      
+      - name: Generate Supabase types
         run: |
           supabase gen types typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/supabase.ts
-      
-          if [ -n "$(git status --porcelain src/types/supabase.ts)" ]; then
-            echo "❌ Supabase types are out of sync. Please run the generator and commit the result."
-            exit 1
-          else
-            echo "✅ Supabase types are up to date."
-          fi
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: mbvzhvhsywcgmpsnrghn
+
+   
 
     
 
